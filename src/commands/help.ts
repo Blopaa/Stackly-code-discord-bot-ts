@@ -1,16 +1,20 @@
+import { Message } from "discord.js";
+import { IServer } from "../database/models/Servers";
+
 const { MessageEmbed } = require("discord.js");
 
-const helpCommand = async (msg, server) => {
+export const helpCommand = async (msg: Message, server: IServer) => {
   const { bot, channels } = server;
+  if(!bot || !channels) return
   if (
-    (msg.member.hasPermission("BAN_MEMBERS") &&
-      msg.member.hasPermission("KICK_MEMBERS")) ||
-    msg.member.hasPermission("ADMINISTRATOR")
+    (msg.member?.hasPermission("BAN_MEMBERS") &&
+      msg.member?.hasPermission("KICK_MEMBERS")) ||
+    msg.member?.hasPermission("ADMINISTRATOR")
   ) {
     await msg.channel.send(
       new MessageEmbed()
         .setTitle("Useful Commands:")
-        .setColor(`${bot.color.primary}`)
+        .setColor(`${bot.color?.primary}`)
         .setDescription(`**here you will find help for commands**`)
         .setDescription(`prefix: ${bot.prefix}`)
         .addField(`${bot.prefix}avatar`, "will show your avatar")
@@ -33,17 +37,13 @@ const helpCommand = async (msg, server) => {
           `${bot.prefix}support`,
           "will send a message click in the reaction to enter in the new support channel"
         )
-        .addField(
-          `${bot.prefix}register NAME`,
-          `you will be register in db to earn coins`
-        )
         .addField(`${bot.prefix}coins`, `this will show your coins`)
     );
   } else {
     await msg.channel.send(
       new MessageEmbed()
         .setTitle("Useful Commands:")
-        .setColor(`${bot.color.primary}`)
+        .setColor(`${bot.color?.primary}`)
         .setDescription(`**here you will find help for commands**`)
         .setDescription(`prefix: ${bot.prefix}`)
         .addField(`${bot.prefix}avatar`, "will show your avatar")
@@ -55,13 +55,7 @@ const helpCommand = async (msg, server) => {
           `${bot.prefix}support`,
           "will send a message click in the reaction to enter in the new support channel"
         )
-        .addField(
-          `${bot.prefix}register NAME`,
-          `you will be register in db to earn coins`
-        )
         .addField(`${bot.prefix}coins`, `this will show your coins`)
     );
   }
 };
-
-exports.helpCommand = helpCommand;
