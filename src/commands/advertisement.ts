@@ -1,7 +1,11 @@
-const { MessageEmbed } = require("discord.js");
+import { Message, MessageEmbed } from "discord.js";
+import { IServer } from "../database/models/Servers";
 
-const advertisments = async (msg, args, server) => {
+
+export const advertisments = async (msg: Message, args: string[], server: IServer) => {
+  if(!msg.member) return
   const {bot} = server
+  if(!bot?.color) return
   const sEmbed = new MessageEmbed()
     .setTimestamp()
     .setTitle(`📢 | Anuncio`)
@@ -20,5 +24,3 @@ const advertisments = async (msg, args, server) => {
     msg.reply("no tienes permisos o algo salio mal");
   }
 };
-
-exports.advertisments = advertisments;
