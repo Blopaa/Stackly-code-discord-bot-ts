@@ -24,6 +24,7 @@ import { suggestions } from "./commands/suggestion";
 import { clearCommand } from "./commands/clear";
 import { helpCommand } from "./commands/help";
 import { CoinsCommand } from "./commands/economy/myCoins";
+import { supportCommand } from "./commands/tickets/support";
 const client: Client = new Discord.Client();
 
 client.on("ready", async () => {
