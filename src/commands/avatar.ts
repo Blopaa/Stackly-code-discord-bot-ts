@@ -1,8 +1,10 @@
-const {MessageEmbed} = require('discord.js');
+import { Message, MessageEmbed } from "discord.js";
+import { IServer } from "../database/models/Servers";
 
 
-const AvatarCommand = async (message, server) => {
+export const AvatarCommand = async (message: Message, server: IServer) => {
   const {bot} = server
+  if(!bot || !bot.color) return
   await message.channel.send(
     // prettier-ignore
     new MessageEmbed()
@@ -13,5 +15,3 @@ const AvatarCommand = async (message, server) => {
       .setImage(`${message.author.avatarURL()}`)
   );
 }
-
-exports.AvatarCommand = AvatarCommand
