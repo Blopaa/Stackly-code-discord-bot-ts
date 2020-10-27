@@ -1,7 +1,11 @@
+import { Message } from "discord.js";
+import { IServer } from "../../database/models/Servers";
+
 const { MessageEmbed } = require("discord.js");
 
-const warnCommand = async (msg, server) => {
+export const warnCommand = async (msg: Message, server: IServer) => {
   const {roles} = server
+  if(!roles || !msg.member) return 
   const user = msg.mentions.users.first();
   const wEmbed = new MessageEmbed()
     .setTitle("Warn")
@@ -27,5 +31,3 @@ const warnCommand = async (msg, server) => {
     msg.reply(`no tienes permisos para poder hacer warn a el usuario ${user}`);
   }
 };
-
-exports.warnCommand = warnCommand;
