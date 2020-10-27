@@ -1,9 +1,14 @@
+import { Message } from "discord.js";
+import { IServer } from "../../database/models/Servers";
+
 const { MessageEmbed } = require("discord.js");
 
 
-const kickCommand = async (msg, server) => {
+export const kickCommand = async (msg: Message, server: IServer) => {
+    if(!msg || !msg.member) return;
     const {name} = server
     const userModed = msg.mentions.members?.first();
+    if(!userModed) return
     const kEmbed = new MessageEmbed()
     .setAuthor(`${msg.author.username}`, `${msg.author.avatarURL()}`)
     .setTitle("Kick")
@@ -19,8 +24,7 @@ const kickCommand = async (msg, server) => {
                 msg.channel.send(
                     kEmbed
                 )
-                console.log(`${msg.author.tag} ${userModed.tag} ha sido echado de ${name}`)
-            }).catch(err => {
+            }).catch((err: Error) => {
                 msg.reply(`No se pudo expulsar a el usuario ${userModed}`);
                 // Log the error
                 console.error(err);
@@ -31,5 +35,3 @@ const kickCommand = async (msg, server) => {
           );
     }
 }
-
-exports.kickCommand = kickCommand
