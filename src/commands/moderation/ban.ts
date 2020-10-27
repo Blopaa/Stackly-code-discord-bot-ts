@@ -1,9 +1,11 @@
-const { MessageEmbed } = require("discord.js");
+import {Message, MessageEmbed} from 'discord.js'
+import { IServer } from '../../database/models/Servers';
 
-
-const banCommand = async (msg, server) => {
+export const banCommand = async (msg: Message, server: IServer) => {
+  if(!msg || !msg.member) return;
   const {name} = server
   const userModed = msg.mentions.members?.first();
+  if(!userModed) return;
   const kEmbed = new MessageEmbed()
     .setAuthor(`${msg.author.username}`, `${msg.author.avatarURL()}`)
     .setTitle("ban")
@@ -20,7 +22,6 @@ const banCommand = async (msg, server) => {
       .ban()
       .then(() => {
         msg.channel.send(kEmbed);
-        console.log(`${msg.author.tag} ${userModed.tag}  ha sido baneado de ${name}`);
       })
       .catch((err) => {
         msg.reply(`No se pudo banear a el usuario ${userModed}`);
@@ -33,5 +34,3 @@ const banCommand = async (msg, server) => {
     );
   }
 };
-
-exports.banCommand = banCommand;
