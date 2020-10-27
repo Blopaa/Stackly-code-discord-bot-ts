@@ -21,7 +21,7 @@ export interface IServer extends Document {
         everyone: string
     },
     categories?: {
-        SOPORTE: String
+        SOPORTE: string
     }
 }
 
