@@ -32,7 +32,7 @@ client.on("ready", async () => {
   await client.user?.setActivity(`Hey :D`); // establish bot activity
 });
 
-client.on("message", async (msg: Message) => {
+client.on("message", async (msg: Message) => {  
   if (!msg.guild) return;
   let server = await Server.findOne({ serverID: msg.guild.id });
   if (!server) return;
@@ -100,7 +100,6 @@ client.on("message", async (msg: Message) => {
 client.on(
   "guildMemberAdd",
   async (member: GuildMember | PartialGuildMember): Promise<void> => {
-    console.log('new user')
     const server = await Server.findOne({ serverID: member.guild.id });
     if (!server) return;
     const { channels, roles, bot }: IServer = server;
@@ -118,7 +117,7 @@ client.on(
       new MessageEmbed()
         .setTitle("BIENVENIDO")
         .setColor(bot.color.primary)
-        .setDescription(`Bienvenido al servidor ${member}`)
+        .setDescription(`Bienvenido al servidor <@${member}>`)
     );
   }
 );
