@@ -40,14 +40,10 @@ client.on("message", async (msg: Message) => {
   if (!serverID || !bot) return;
   let userData = await User.findOne({ IDuser: msg.author.id });
 
-  if (!msg.content.startsWith(bot.prefix)) {
-    return;
-  }
-
   const commandArguments = msg.content.split(" ");
   let commandName = commandArguments.shift() || bot.prefix;
   commandName = await commandName.slice(bot.prefix.length);
-  if (msg.guild.id === serverID) {
+  if (msg.guild.id === serverID && msg.content.startsWith(bot.prefix)) {
     switch (commandName) {
       case "avatar":
         await AvatarCommand(msg, server);
@@ -104,6 +100,7 @@ client.on("message", async (msg: Message) => {
 client.on(
   "guildMemberAdd",
   async (member: GuildMember | PartialGuildMember): Promise<void> => {
+    console.log('new user')
     const server = await Server.findOne({ serverID: member.guild.id });
     if (!server) return;
     const { channels, roles, bot }: IServer = server;
