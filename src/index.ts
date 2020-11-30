@@ -28,6 +28,7 @@ import { supportCommand } from './commands/tickets/support';
 import { verification } from './commands/verification';
 import { addReactionsRoles } from './commands/addReactionRoles';
 import { callUsers } from './commands/callUsers';
+import { createEmbed } from './commands/createEmbed';
 const client: Client = new Discord.Client();
 
 client.on('ready', async () => {
@@ -88,7 +89,8 @@ client.on('message', async (msg: Message) => {
         await callUsers(msg, commandArguments);
         break;
       case 'embed':
-        await callUsers(msg, commandArguments);
+        await createEmbed(msg, commandArguments);
+        break;
     }
   }
 
