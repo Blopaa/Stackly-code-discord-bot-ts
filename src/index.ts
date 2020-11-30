@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 import {
   Message,
@@ -7,32 +7,33 @@ import {
   PartialGuildMember,
   Client,
   TextChannel,
-} from "discord.js";
+} from 'discord.js';
 
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
 dotenv.config();
-import Discord from "discord.js";
-import User from "./database/models/Users";
-import Server, { IServer } from "./database/models/Servers";
-import { connect } from "./database/database";
-import { AvatarCommand } from "./commands/avatar";
-import { kickCommand } from "./commands/moderation/kick";
-import { banCommand } from "./commands/moderation/ban";
-import { warnCommand } from "./commands/moderation/warn";
-import { advertisments } from "./commands/advertisement";
-import { suggestions } from "./commands/suggestion";
-import { clearCommand } from "./commands/clear";
-import { helpCommand } from "./commands/help";
-import { CoinsCommand } from "./commands/economy/myCoins";
-import { supportCommand } from "./commands/tickets/support";
+import Discord from 'discord.js';
+import User from './database/models/Users';
+import Server, { IServer } from './database/models/Servers';
+import { connect } from './database/database';
+import { AvatarCommand } from './commands/avatar';
+import { kickCommand } from './commands/moderation/kick';
+import { banCommand } from './commands/moderation/ban';
+import { warnCommand } from './commands/moderation/warn';
+import { advertisments } from './commands/advertisement';
+import { suggestions } from './commands/suggestion';
+import { clearCommand } from './commands/clear';
+import { helpCommand } from './commands/help';
+import { CoinsCommand } from './commands/economy/myCoins';
+import { supportCommand } from './commands/tickets/support';
+import { verification } from './commands/verification';
 const client: Client = new Discord.Client();
 
-client.on("ready", async () => {
-  console.log("bot online");
+client.on('ready', async () => {
+  console.log('bot online');
   await client.user?.setActivity(`Hey :D`); // establish bot activity
 });
 
-client.on("message", async (msg: Message) => {  
+client.on('message', async (msg: Message) => {
   if (!msg.guild) return;
   let server = await Server.findOne({ serverID: msg.guild.id });
   if (!server) return;
@@ -40,41 +41,44 @@ client.on("message", async (msg: Message) => {
   if (!serverID || !bot) return;
   let userData = await User.findOne({ IDuser: msg.author.id });
 
-  const commandArguments = msg.content.split(" ");
+  const commandArguments = msg.content.split(' ');
   let commandName = commandArguments.shift() || bot.prefix;
   commandName = await commandName.slice(bot.prefix.length);
   if (msg.guild.id === serverID && msg.content.startsWith(bot.prefix)) {
     switch (commandName) {
-      case "avatar":
+      case 'avatar':
         await AvatarCommand(msg, server);
         break;
-      case "kick":
+      case 'kick':
         await kickCommand(msg, server);
         break;
-      case "ban":
+      case 'ban':
         await banCommand(msg, server);
         break;
-      case "warn":
+      case 'warn':
         await warnCommand(msg, server);
         break;
-      case "support":
+      case 'support':
         await supportCommand(msg, server);
         break;
-      case "suggestion":
+      case 'suggestion':
         await suggestions(msg, commandArguments, server);
         break;
-      case "advert":
+      case 'advert':
         await advertisments(msg, commandArguments, server);
         break;
-      case "clear":
+      case 'clear':
         await clearCommand(msg, commandArguments);
         break;
-      case "help":
+      case 'help':
         await helpCommand(msg, server);
         break;
-      case "coins":
+      case 'coins':
         await CoinsCommand(msg);
-      break;  
+        break;
+      case 'verification':
+        await verification(msg, commandArguments, server);
+        break;
     }
   }
 
@@ -87,7 +91,7 @@ client.on("message", async (msg: Message) => {
       IDuser: msg.author.id,
     });
     msg.reply(
-      "se te ha creado un usuario, ahora podras ganar monedas para ver tus monedas haz **!coins**"
+      'se te ha creado un usuario, ahora podras ganar monedas para ver tus monedas haz **!coins**'
     );
   }
 
@@ -98,12 +102,12 @@ client.on("message", async (msg: Message) => {
 });
 
 client.on(
-  "guildMemberAdd",
+  'guildMemberAdd',
   async (member: GuildMember | PartialGuildMember): Promise<void> => {
     const server = await Server.findOne({ serverID: member.guild.id });
     if (!server) return;
     const { channels, roles, bot }: IServer = server;
-    if (!roles || !channels || !bot || !bot.color) return;
+    if (!roles || !channels || !bot || !bot.primaryColor) return;
     if (roles.invitado) {
       member.roles.add(roles.invitado);
     }
@@ -115,8 +119,8 @@ client.on(
 
     await (channel as TextChannel).send(
       new MessageEmbed()
-        .setTitle("BIENVENIDO")
-        .setColor(bot.color.primary)
+        .setTitle('BIENVENIDO')
+        .setColor(bot.primaryColor)
         .setDescription(`Bienvenido al servidor <@${member}>`)
     );
   }

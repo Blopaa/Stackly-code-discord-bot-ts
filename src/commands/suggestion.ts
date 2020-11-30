@@ -1,7 +1,5 @@
-import { Message, MessageEmbed, TextChannel } from "discord.js";
-import { IServer } from "../database/models/Servers";
-
-
+import { Message, MessageEmbed, TextChannel } from 'discord.js';
+import { IServer } from '../database/models/Servers';
 
 export const suggestions = async (
   msg: Message,
@@ -9,7 +7,7 @@ export const suggestions = async (
   server: IServer
 ) => {
   const { bot, channels } = server;
-  if (!channels?.sugerencias || !bot?.prefix || !bot?.color) return;
+  if (!channels?.sugerencias || !bot?.prefix || !bot?.primaryColor) return;
   if (!msg.guild) return;
 
   let sChannel = msg.guild.channels.cache.find(
@@ -20,26 +18,25 @@ export const suggestions = async (
   if (!args || args.length === 0) {
     msg.reply(`ey, usa ${bot.prefix}suggestion <sugerencia>`);
   } else if (!sChannel) {
-    msg.reply("Hey, no puede encontrar el canal Sugerencias!");
+    msg.reply('Hey, no puede encontrar el canal Sugerencias!');
   } else {
     //we say to the user that his message was suscefully sended
 
     msg.channel.send(`Su sugerencia fue enviada a <#${channels.sugerencias}>`);
-    await msg
-      .delete({ timeout: 1000 });//we remove the command message
-      
-      (sChannel as TextChannel)
+    await msg.delete({ timeout: 1000 }); //we remove the command message
+
+    (sChannel as TextChannel)
       .send(
         new MessageEmbed()
           .setTimestamp()
           .setTitle(`🎟️ | Sugerencia`)
-          .setDescription(`${args.join(" ")}`)
-          .setColor(bot.color.primary)
+          .setDescription(`${args.join(' ')}`)
+          .setColor(bot.primaryColor)
           .setFooter(` ${msg.author.tag}`)
       )
       .then((message: Message) => {
-        message.react("👍");
-        message.react("👎");
+        message.react('👍');
+        message.react('👎');
       });
   }
 };
