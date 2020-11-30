@@ -18,13 +18,13 @@ export const verification = (msg: Message, args: string[], server: IServer) => {
 
   const vMsg = new MessageEmbed()
     .setColor(bot.primaryColor)
-    .setTitle('verificacion')
+    .setTitle('✅ | Verificación')
     .setDescription(args.join(' '));
 
   msg.channel.send(vMsg).then((msg: Message) => {
-    msg.react('🎟️');
+    msg.react('✅');
     const filter = (reaction: MessageReaction, user: User) => {
-      return reaction.emoji.name === '🎟️' && user.id !== msg.author.id;
+      return reaction.emoji.name === '✅' && user.id !== msg.author.id;
     };
 
     const collector = msg.createReactionCollector(filter, { dispose: true });
@@ -34,6 +34,7 @@ export const verification = (msg: Message, args: string[], server: IServer) => {
       async (reaction: MessageReaction, user: GuildMember) => {
         const member = msg.guild?.member(user);
         member?.roles.add(roles.verificated);
+        member?.roles.remove(roles.invitado);
       }
     );
 
