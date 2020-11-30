@@ -38,6 +38,19 @@ export const helpCommand = async (msg: Message, server: IServer) => {
           'will send a message click in the reaction to enter in the new support channel'
         )
         .addField(`${bot.prefix}coins`, `this will show your coins`)
+        .addField(`${bot.prefix}embed TEXT`, `this will create a simple embed`)
+        .addField(
+          `${bot.prefix}callUsers USER TIMES_TO_REPEAT MESSAGE`,
+          `this will spam a user any times you want with a custom message`
+        )
+        .addField(
+          `${bot.prefix}addReaction CHANNEL MESSAGE_ID ROLE EMOJI`,
+          `this will create a reaction role in a desired message`
+        )
+        .addField(
+          `${bot.prefix}verification TEXT`,
+          `this will create a custom embed for verification removing the role unverified and add verifird role when you react`
+        )
     );
   } else {
     await msg.channel.send(
@@ -56,6 +69,7 @@ export const helpCommand = async (msg: Message, server: IServer) => {
           'will send a message click in the reaction to enter in the new support channel'
         )
         .addField(`${bot.prefix}coins`, `this will show your coins`)
+        .addField(`${bot.prefix}embed TEXT`, `this will create a simple embed`)
     );
   }
 };
