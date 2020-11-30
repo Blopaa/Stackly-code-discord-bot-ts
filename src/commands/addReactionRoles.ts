@@ -25,28 +25,32 @@ export const addReactionsRoles = async (msg: Message, args: string[]) => {
     return reaction.emoji.name === emoji;
   };
 
-  (channel as TextChannel).messages
-    .fetch(args.slice(1, 2).join())
-    .then((msg: Message) => {
-      const collector = msg.createReactionCollector(filter, { dispose: true });
-      msg.react(emoji);
+  if (msg.member?.hasPermission('ADMINISTRATOR')) {
+    (channel as TextChannel).messages
+      .fetch(args.slice(1, 2).join())
+      .then((msg: Message) => {
+        const collector = msg.createReactionCollector(filter, {
+          dispose: true,
+        });
+        msg.react(emoji);
 
-      collector.on(
-        'collect',
-        async (reaction: MessageReaction, user: GuildMember) => {
-          const member = msg.guild?.member(user);
-          member?.send(`se te a añadido el rol ${role.name}`);
-          member?.roles.add(role);
-        }
-      );
+        collector.on(
+          'collect',
+          async (reaction: MessageReaction, user: GuildMember) => {
+            const member = msg.guild?.member(user);
+            member?.send(`se te a añadido el rol ${role.name}`);
+            member?.roles.add(role);
+          }
+        );
 
-      collector.on(
-        'remove',
-        async (reaction: MessageReaction, user: GuildMember) => {
-          const member = msg.guild?.member(user);
-          member?.send(`se te a quitao el rol ${role.name}`);
-          member?.roles.remove(role);
-        }
-      );
-    });
+        collector.on(
+          'remove',
+          async (reaction: MessageReaction, user: GuildMember) => {
+            const member = msg.guild?.member(user);
+            member?.send(`se te a quitao el rol ${role.name}`);
+            member?.roles.remove(role);
+          }
+        );
+      });
+  }
 };

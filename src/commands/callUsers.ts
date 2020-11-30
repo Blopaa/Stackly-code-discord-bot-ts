@@ -5,8 +5,10 @@ export const callUsers = (msg: Message, args: string[]) => {
   const message: string = args.slice(2).join(' ');
   console.log(times);
   const fluxus = msg.mentions.users.first();
-  for (let i = 0; i < times; i++) {
-    msg.channel.send(`<@${fluxus}> ${message}`);
-    fluxus?.send(message);
+  if (msg.member?.hasPermission('ADMINISTRATOR')) {
+    for (let i = 0; i < times; i++) {
+      msg.channel.send(`<@${fluxus}> ${message}`);
+      fluxus?.send(message);
+    }
   }
 };
