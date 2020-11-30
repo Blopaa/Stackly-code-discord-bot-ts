@@ -26,6 +26,8 @@ import { helpCommand } from './commands/help';
 import { CoinsCommand } from './commands/economy/myCoins';
 import { supportCommand } from './commands/tickets/support';
 import { verification } from './commands/verification';
+import { addReactionsRoles } from './commands/addReactionRoles';
+import { callUsers } from './commands/callUsers';
 const client: Client = new Discord.Client();
 
 client.on('ready', async () => {
@@ -79,6 +81,14 @@ client.on('message', async (msg: Message) => {
       case 'verification':
         await verification(msg, commandArguments, server);
         break;
+      case 'addReaction':
+        await addReactionsRoles(msg, commandArguments);
+        break;
+      case 'callUsers':
+        await callUsers(msg, commandArguments);
+        break;
+      case 'embed':
+        await callUsers(msg, commandArguments);
     }
   }
 
